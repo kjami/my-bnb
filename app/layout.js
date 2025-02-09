@@ -1,3 +1,5 @@
+import Navbar from "@/components/Navbar.js";
+import Footer from "@/components/Footer.js";
 import "@/assets/styles/global.css";
 
 export const metadata = {
@@ -10,7 +12,9 @@ const MainLayout = ({ children }) => {
     return (
         <html lang="en" suppressHydrationWarning>
             <body>
-                { children }
+                <Navbar />
+                <main>{ children }</main>
+                <Footer />
             </body>
         </html>
     );

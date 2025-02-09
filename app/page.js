@@ -1,10 +1,11 @@
-import Link from 'next/link';
+import Hero from "@/components/Hero";
+import InfoBoxes from "@/components/InfoBoxes";
 
 const HomePage = () => {
     return (
         <>
-            <div className="class-2xl">Home Page!</div>
-            <Link href={{ pathname: "properties"}}>Properties</Link>
+            <Hero/>
+            <InfoBoxes/>
         </>
     );
 };
