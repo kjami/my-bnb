@@ -1,11 +1,24 @@
 "use server";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import connectDB from "@/config/database";
+import getSessionUser from "@/utils/get-session-user";
+import Property from "@/models/Property";
 
 async function addProperty (formData) {
+    await connectDB();
+    const session = await getSessionUser();
+
+    if (!session) {
+        throw new Error("User is not authenticated");
+    }
+
     const images = formData.getAll("images")
         .filter((image) => image.name !== "")
         .map(((image) => image.name));
     
     const propertyData = {
+        owner: session.id,
         type: formData.get("type"),
         name: formData.get("name"),
         description: formData.get("description"),
@@ -32,7 +45,11 @@ async function addProperty (formData) {
         }
 
     };
-    console.log(propertyData)
+    const property = new Property(propertyData);
+    await property.save();
+
+    revalidatePath("/", "layout");
+    redirect(`/properties/${property._id}`);
 };
 
 export default addProperty;

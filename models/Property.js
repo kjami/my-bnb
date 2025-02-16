@@ -42,7 +42,7 @@ const propertySchema = new Schema({
         type: Number,
         required: [true, "No. of beds are required"]
     },
-    bath: {
+    baths: {
         type: Number,
         required: [true, "No. of baths are required"]
     },
