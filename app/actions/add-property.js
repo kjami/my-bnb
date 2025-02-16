@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import connectDB from "@/config/database";
 import getSessionUser from "@/utils/get-session-user";
 import Property from "@/models/Property";
+import cloudinary from "@/config/cloudinary";
 
 async function addProperty (formData) {
     await connectDB();
@@ -14,15 +15,13 @@ async function addProperty (formData) {
     }
 
     const images = formData.getAll("images")
-        .filter((image) => image.name !== "")
-        .map(((image) => image.name));
+        .filter((image) => image.name !== "");
     
     const propertyData = {
         owner: session.id,
         type: formData.get("type"),
         name: formData.get("name"),
         description: formData.get("description"),
-        images: images,
         amenities: formData.get("amenities"),
         location: {
             street: formData.get("location.street"),
@@ -43,8 +42,24 @@ async function addProperty (formData) {
             email: formData.get("seller_info.email"),
             phone: formData.get("seller_info.phone"),
         }
-
     };
+
+    const imageUrls = [];
+
+    for (const image of images) {
+        const buffer = await image.arrayBuffer();
+        const imageArray = Array.from(new Uint8Array(buffer));
+        const imageData = Buffer.from(imageArray);
+        const imageBase64 = imageData.toString("base64");
+        const result = await cloudinary.uploader.upload(`data:image/png;base64,${imageBase64}`, {
+            folder: "mybnb"
+        });
+
+        imageUrls.push(result.secure_url);
+    }
+
+    propertyData.images = imageUrls;
+
     const property = new Property(propertyData);
     await property.save();
 
