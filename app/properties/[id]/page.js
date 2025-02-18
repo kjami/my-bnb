@@ -4,10 +4,18 @@ import Property from '@/models/Property';
 import PropertyHeaderImage from '@/components/PropertyHeaderImage';
 import PropertyDetails from '@/components/PropertyDetails';
 import PropertyImage from "@/components/PropertyImage";
+import { convertToSerializableObject } from "@/utils/convert-to-object";
 
 const page = async ({ params }) => {
     params = await params;
-    const property = await Property.findOne({ _id: params.id }).lean();
+    let property = await Property.findOne({ _id: params.id }).lean();
+
+    if (!property) {
+        return (<h2 className="text-2xl font-bold m-10">Property not found</h2>)
+    }
+
+    property = convertToSerializableObject(property);
+
     return (
         <>
             <PropertyHeaderImage property={property} />
