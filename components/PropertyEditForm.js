@@ -1,7 +1,8 @@
-import addProperty from "@/app/actions/add-property";
+import updateProperty from "@/app/actions/update-property";
 
 const ProprtyEditForm = ({ property }) => {
-    return (<form>
+    const updatePropertyById = updateProperty.bind(null, property._id.toString());
+    return (<form action={updatePropertyById}>
         <h2 className="text-3xl text-center font-semibold mb-6">
           Edit Property
         </h2>
@@ -132,7 +133,7 @@ const ProprtyEditForm = ({ property }) => {
               id="square_feet"
               name="square_feet"
               className="border rounded w-full py-2 px-3"
-            defaultValue={property.sqaure_feet}
+            defaultValue={property.square_feet}
             required
             />
           </div>
