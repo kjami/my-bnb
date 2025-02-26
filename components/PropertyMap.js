@@ -2,6 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { setDefaults, fromAddress } from "react-geocode";
+import ReactMapGL from "react-map-gl";
+import Image from "next/image";
+import pin from "@/assets/images/pin.svg";
+import Spinner from "@/components/Spinner";
 
 const PropertyMap = ({ property }) => {
     const [lat, setLat] = useState(null);
@@ -40,19 +44,34 @@ const PropertyMap = ({ property }) => {
                     longitude: lng,
                 });
             } catch (error) {
-                setGeocodeError(true);
+                // setGeocodeError(true);
+                setLat(90);
+                setLong(90);
                 console.log(error);
             } finally {
+
                 setLoading(false);
             }
         }
         fetchCords();
     }, []);
 
-    if (loading) return (<h3>Loading...</h3>);
+    if (loading) return <Spinner />;
     if (geocodeError) return (<h3>No location found</h3>);
 
-    return (<div>Map for {property.name}</div>)
+    return (
+        <ReactMapGL.Map 
+            mapboxApiAccessToken={process.env.MAPBOX_TOKEN}
+            mapLin={import("mapbox-gl")}
+            initialViewState={{
+                longitude: long,
+                latitude: lat,
+                zoom: 15,
+            }}
+            style={{ width: "100%", height: "500px" }}
+            mapStyle="mapbox://styles/mapbox/streets-v9"
+        />
+    )
 };
 
 export default PropertyMap;
