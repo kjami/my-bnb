@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { setDefaults, fromAddress } from "react-geocode";
-import ReactMapGL from "react-map-gl";
+import Map, { Marker } from 'react-map-gl/mapbox';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import Image from "next/image";
 import pin from "@/assets/images/pin.svg";
 import Spinner from "@/components/Spinner";
@@ -45,8 +46,8 @@ const PropertyMap = ({ property }) => {
                 });
             } catch (error) {
                 // setGeocodeError(true);
-                setLat(90);
-                setLong(90);
+                setLat(46.149394);
+                setLong(-75.485938);
                 console.log(error);
             } finally {
 
@@ -60,17 +61,22 @@ const PropertyMap = ({ property }) => {
     if (geocodeError) return (<h3>No location found</h3>);
 
     return (
-        <ReactMapGL.Map 
-            mapboxApiAccessToken={process.env.MAPBOX_TOKEN}
-            mapLin={import("mapbox-gl")}
-            initialViewState={{
-                longitude: long,
-                latitude: lat,
-                zoom: 15,
-            }}
-            style={{ width: "100%", height: "500px" }}
-            mapStyle="mapbox://styles/mapbox/streets-v9"
-        />
+        !loading && 
+        <Map
+          // https://visgl.github.io/react-map-gl/docs/get-started/mapbox-tokens
+          mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
+          initialViewState={{
+            longitude: long,
+            latitude: lat,
+            zoom: 15,
+          }}
+          style={{ width: "100%", height: "500px" }}
+          mapStyle="mapbox://styles/mapbox/streets-v9"
+        >
+            <Marker longitude={long} latitude={lat} anchor="bottom">
+                <Image src={pin} alt="location" width={40} height={40}/>
+            </Marker>
+        </Map>
     )
 };
 
