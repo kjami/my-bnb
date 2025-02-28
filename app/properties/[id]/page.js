@@ -5,6 +5,9 @@ import PropertyHeaderImage from '@/components/PropertyHeaderImage';
 import PropertyDetails from '@/components/PropertyDetails';
 import PropertyImage from "@/components/PropertyImage";
 import { convertToSerializableObject } from "@/utils/convert-to-object";
+import BookmarkButton from "@/components/BookmarkButton";
+import ShareButtons from "@/components/ShareButtons";
+import PropertyContactForm from "@/components/PropertyContactForm";
 
 const page = async ({ params }) => {
     params = await params;
@@ -33,6 +36,11 @@ const page = async ({ params }) => {
                 <div className="container m-auto py-10 px-6">
                     <div className="grid grid-cols-1 md:grid-cols-70/30 w-full gap-6">
                         <PropertyDetails property={property} />
+                        <aside className="space-y-4">
+                            <BookmarkButton />
+                            <ShareButtons />
+                            <PropertyContactForm />
+                        </aside>
                     </div>
                 </div>
             </section>

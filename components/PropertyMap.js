@@ -46,8 +46,8 @@ const PropertyMap = ({ property }) => {
                 });
             } catch (error) {
                 // setGeocodeError(true);
-                setLat(46.149394);
-                setLong(-75.485938);
+                setLat(45.3615762);
+                setLong(-75.9331503);
                 console.log(error);
             } finally {
 
