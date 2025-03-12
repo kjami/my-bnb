@@ -26,6 +26,10 @@ const messageSchema = new Schema({
     },
     phone: String,
     body: String,
+    read: {
+        type: Boolean,
+        default: false,
+    },
 }, {
     timestamps: true
 });
