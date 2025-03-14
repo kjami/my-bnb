@@ -1,4 +1,14 @@
+"use client";
+import { useState } from "react";
+import markMessageAsRead from "@/app/actions/mark-message-as-read";
+
 const MessageCard = ({ message }) => {
+    const [isRead, setIsRead] = useState(message.read || false);
+    const handleReadClick = async () => {
+        const read = await markMessageAsRead(message._id);
+        toast.success(`Message markes as ${read ? "read" : "new"}`);
+        setIsRead(read);
+    };
     return (<div
         className="relative bg-white p-4 rounded-md shadow-md border border-gray-200"
       >
@@ -25,10 +35,10 @@ const MessageCard = ({ message }) => {
           </li>
           <li><strong>Received:</strong>{' '}{new Date(message.createdAt).toLocaleString()}</li>
         </ul>
-        <button
+        <button onClick={handleReadClick}
           className="mt-4 mr-3 bg-blue-500 text-white py-1 px-3 rounded-md"
         >
-          Mark As Read
+          {isRead ? "Mark As New" : "Mark As Read"}
         </button>
         <button className="mt-4 bg-red-500 text-white py-1 px-3 rounded-md">
           Delete
