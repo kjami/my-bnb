@@ -12,7 +12,6 @@ const MessagePage = async () => {
 
     if (!session) throw new Error("Login error!");
 
-    console.log(session.id)
     const readMessages = await Message.find({ recipient: session.id, read: true })
         .sort({ createdAt: -1 })
         .populate("sender", "username")
@@ -26,7 +25,6 @@ const MessagePage = async () => {
         .lean();
 
     const messages = [...unreadMessages, ...readMessages];
-    console.log(messages);
 
     messages.map((messageDoc) => {
         const message = convertToSerializableObject(messageDoc);
