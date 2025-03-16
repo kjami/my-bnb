@@ -2,6 +2,7 @@
 import { useState } from "react";
 import markMessageAsRead from "@/app/actions/mark-message-as-read";
 import deleteMessage from "@/app/actions/delete-message";
+import { toast } from "react-toastify";
 
 const MessageCard = ({ message }) => {
     const [isRead, setIsRead] = useState(message.read || false);
