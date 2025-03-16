@@ -11,7 +11,6 @@ const MessageCard = ({ message }) => {
         toast.success(`Message marked as ${read ? "read" : "new"}`);
         setIsRead(read);
     };
-
     const handleDeleteClick = async () => {
         await deleteMessage(message._id);
         toast.success(`Message is deleted`);
@@ -40,7 +39,7 @@ const MessageCard = ({ message }) => {
             <a href={`tel:${message.phone}`} className="text-blue-500"
               >{message.phone}</a>
           </li>
-          <li><strong>Received:</strong>{' '}{new Date(message.createdAt).toLocaleString()}</li>
+          <li><strong>Received:</strong>{' '}<p suppressHydrationWarning={true}>{new Date(message.createdAt).toLocaleString()}</p></li>
         </ul>
         <button onClick={handleReadClick}
           className="mt-4 mr-3 bg-blue-500 text-white py-1 px-3 rounded-md"
