@@ -13,16 +13,18 @@ const markMessageAsRead = async (messageId) => {
 
     const message = await Message.findById(messageId);
     
-    if (!message || message.recipient !== sessionUser.id) throw new Error("Unauthorized!");
+    console.log(message.read, "before")
+    if (!message || message.recipient.toString() !== sessionUser.id) throw new Error("Unauthorized!");
 
     message.read = !message.read;
+    console.log(message.read, "after")
 
     revalidatePath("/messages", "page");
 
-    message.save();
+    await message.save();
 
     return {
-        isBookmarked
+        read: message.read
     }
 };
 
